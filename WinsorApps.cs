@@ -10,4 +10,7 @@ public readonly record struct AuthResponse(string UserId, string jwt, DateTime e
 
 public readonly record struct UserInfo(string id, String FirstName, String nickname, string lastName);
 
+public readonly record struct StudentInfo(string gradYear, string className, AdvisorInfo advisor);
+
+public readonly record struct AdvisorInfo(string id, string firstName, string lastName, string email);
 

@@ -9,36 +9,16 @@ using System.Text;
 using System.Text.Json;
 using CS_First_HTTP_Client;
 
-HttpClient client = new()
-{
-    BaseAddress = new Uri("https://forms-dev.winsor.edu")
-};
+    
+    await ApiService.Current.AuthenticateAsync (new Login( "jinseo.kim@winsor.edu", "BTNrwo900%&!"));
+    
+    var user = await ApiService.Current.SendAsync<UserInfo>(HttpMethod.Get, "api/users/self");
+    Console.WriteLine (user);
 
-#region Build Authentication Request
+    var cycleDays = await ApiService.Current.SendAsync<CycleDay[]>(HttpMethod.Get, "api/schedule/cycle-day");
 
-var login = new Login ("jinseo.kim@winsor.edu", "BTNrwo900%&!");
-
-var jsonContent = JsonSerializer.Serialize(login);
-
-var request= new HttpRequestMessage(HttpMethod.Post, requestUri: "api/auth");
-request.Content= new StringContent(
-    jsonContent, Encoding.UTF8, mediaType: "application/json");
+    foreach (var day in cycleDays)
+    {
+        Console.WriteLine($"{day.date:dddd dd MMMM} is {day.cycleDay}");
+    }
     
-    #endregion
-    
-    var response = await client.SendAsync(request);
-    
-    var jsonResponse = await response.Content.ReadAsStringAsync ();
-    
-    AuthResponse auth= JsonSerializer.Deserialize  <AuthResponse> (jsonResponse);
-    
-    Console.WriteLine(auth);
-    
-    request = new(HttpMethod.Get, requestUri: "api/users/self");
-    request.Headers.Authorization
-        =new AuthenticationHeaderValue(scheme:"Bearer", parameter:auth.jwt);
-    
-    response = await client.SendAsync (request);
-    jsonResponse = await response. Content. ReadAsStringAsync();
-    UserInfo user = JsonSerializer. Deserialize<UserInfo>(jsonResponse);
-    Console.WriteLine(user);

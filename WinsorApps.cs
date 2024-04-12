@@ -14,3 +14,5 @@ public readonly record struct StudentInfo(string gradYear, string className, Adv
 
 public readonly record struct AdvisorInfo(string id, string firstName, string lastName, string email);
 
+public readonly record struct CycleDay(DateOnly date, String cycleDay);
+

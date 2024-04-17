@@ -9,6 +9,9 @@ using System.Text;
 using System.Text.Json;
 using CS_First_HTTP_Client;
 
+ScheduleService scheduleService = new(ApiService.Current);
+
+var schedule = await scheduleService.GetAcademicSchedule();
     
     await ApiService.Current.AuthenticateAsync (new Login( "jinseo.kim@winsor.edu", "BTNrwo900%&!"));
     
